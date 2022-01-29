@@ -70,13 +70,9 @@ class TechSAV {
     //  SOFIANE 26/01/2022
     public function printFolders($data){
                 // print sizeof($data);
-                // echo "<div class=''>";
                 foreach($data as $datas){
                     echo "<div class='dos-container'>";
                     echo "<H3 class='legend-title'>DOSSIER NUMERO: ".$datas['OHR_ORDERNUMBER']."</h3><br/>";
-                    // foreach($datas as $rows){
-                    //     echo "<p>".$rows."</p><br/>";
-                    // }
                     // if($datas[''] --- TO DO
                     echo "<p class='folder-info'> COMMENTAIRE INITIAL: ".$datas['DSV_COM_DIAG_INITIAL']."</p><br/>";
                     // faire un form pour update le dossier --TO DO--
@@ -99,20 +95,15 @@ class TechSAV {
     // function pour aller rechercher les dossiers par type
     // SOFIANE 20/01/2022
     public function searchByType($post){
-        $db = Connector::getInstance();
-        
+        $db = Connector::getInstance();        
         $query = $db->prepareQuery('SELECT * from t_d_dossier_sav_dsv as DSV
                                     JOIN type_dossier_tds as TDS on DSV.DSV_ID = TDS.TDS_ID
                                     JOIN t_d_product_prd as PRD on DSV.DSV_PRD_ID = PRD.PRD_ID
                                     JOIN t_d_orderheader_ohr AS OHR ON DSV.DSV_ORH_ID = OHR.OHR_ID
                                     WHERE TDS.TDS_ID = ?'); 
-
-        $val = intVal($post['foldertype'], 10);
-        
+        $val = intVal($post['foldertype'], 10);        
         $query->bindValue(1, $val, PDO::PARAM_INT);
-
         $query->execute();
-
         $result = $query->fetchAll();
 
         return $this->printFolders($result);
@@ -177,7 +168,7 @@ class TechSAV {
                 return $this->printFolders($result);
                 // return var_dump($sql);
             }else{
-                echo "<p>aucun resultats trouvé.</p>";
+                echo "<p class='warning'>aucun resultats trouvé.</p>";
             }
         
     }

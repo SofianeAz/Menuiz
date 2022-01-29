@@ -31,73 +31,10 @@ class Connector
         } 
         return static::$instance;        
     }
-    // function d'affichage des utilisateurs "POUR ADMIN"
-    public function showUsers(){
-        $show = $this->con->prepare('SELECT * FROM `Users`');
-        $show->execute();
-        $result = $show->fetchAll();
-        return $result;
-    }
-
-    
-    // function traitant une requète SQL et renvoyant un resultat
-    public function querySelect($param){
-        $request = $this->con->prepare($param);
-		$request->execute();
-        $result = $request->fetchAll();
-		return $result;
-	}
-
     public function prepareQuery($param){
         return $this->con->prepare($param);
     }
-
-
-    // function d'affichage de la totalité d'une entité par select SQL
-    public function showQuery($query) {
-            $datas = $this->querySelect($query); 
-            echo "<div class='container'>";           
-            echo "<table class='table'>";
-            foreach($datas as $dataRows){
-                echo "<tr>";                    
-                foreach($dataRows as $tableEntries){
-                    echo '<td> '.$tableEntries.'</td>';
-                }
-                echo "</tr>";
-            }
-            echo "</table>";
-            echo "</div>";
-    }
-    //function d'insertion d'un dossier SAV par formulaire
-    public function insertProduct($param){
-
-        var_dump($param);
-
-        $immat = $param['IMMATRICULATION'];
-        $essence = (int)strip_tags($param['essence']);
-	    $psc = (int)strip_tags($param['puissance']);
-	    $places = (int)strip_tags($param['places']);
-	    $color = $param['peinture'];
-			
-			
-        $query = $this->con->prepare("INSERT INTO `voiture` (IMMATRICULATION, ESSENCE, PUISSANCE, PLACES, COULEUR)
-            VALUES(?, ?, ?, ?, ?)");
-              
-        $query->bindValue(1, $immat, PDO::PARAM_STR);
-		$query->bindValue(2, $essence, PDO::PARAM_STR);
-		$query->bindValue(3, $psc, PDO::PARAM_INT);
-		$query->bindValue(4, $places, PDO::PARAM_INT);
-        $query->bindValue(5, $color, PDO::PARAM_STR);
-
-		$result = $query->execute();
-
-			if ($result === TRUE) {
-				echo '<p class="btn-success">SUCCESS, Vehicule enregistré avec succès !</p>';
-			}else{
-				echo '<p class="btn-warning">Registration failed try again!';
-			}
-		}
-    // function check si l'utilisateur est déjà dans la database
+    // // function check si l'utilisateur est déjà dans la database
     public function checkName($paramName){
             $checkIfExist = $this->prepareQuery('SELECT 1 FROM `users` WHERE `username` = ?');
             $checkIfExist->bindValue(1, $paramName, PDO::PARAM_STR);         

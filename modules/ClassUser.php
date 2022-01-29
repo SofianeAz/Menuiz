@@ -53,7 +53,7 @@ class User {
             $result = $checkIfExist->fetchAll();
         return $result['password'];
     }
-
+    // TO DO - sha256 crypter le password
 }
 
 ?>

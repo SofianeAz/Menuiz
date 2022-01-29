@@ -52,6 +52,7 @@
                 include "modules/classConnector.php";
                 include "modules/ClassUser.php";
                 $user = new User();
+                // hash('sha256', $_POST['ppasscode'])
                 $user->setUsername($_POST['username']);
                 $user->setPassword($_POST['password']);
                 $check = $user->checkName();
